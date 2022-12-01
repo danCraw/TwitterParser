@@ -2,7 +2,7 @@ import re
 from typing import Dict
 from fastapi import APIRouter, HTTPException
 
-from app.api import twitter_api
+from app.api.twitter_api import twitter_api
 from app.db.repositories.status import StatusRepository
 from app.models.status import StatusIn
 from app.models.user import UserOut
@@ -19,6 +19,7 @@ async def parse_users(links: str) -> Dict:
     for username in usernames:
         if username:
             try:
+                print(username)
                 await find_user_account(username)
                 status = 'success'
             except Exception as e:
