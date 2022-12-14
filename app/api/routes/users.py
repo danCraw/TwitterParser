@@ -1,6 +1,5 @@
-import re
-from typing import Dict
 from fastapi import APIRouter, HTTPException
+from tweepy import NotFound
 
 from app.api.twitter_api import twitter_api
 from app.db.repositories.status import StatusRepository
@@ -11,20 +10,17 @@ router = APIRouter()
 
 
 @router.post("/users")
-async def parse_users(links: str) -> Dict:
+async def parse_users(links: list) -> dict:
     status_repo: StatusRepository = StatusRepository()
-    links = re.sub('\s+', '', links)
-    usernames = links.split('https://twitter.com/')
     accounts_list = []
-    for username in usernames:
-        if username:
-            try:
-                print(username)
-                await find_user_account(username)
-                status = 'success'
-            except Exception as e:
-                status = 'failed'
-            accounts_list.append({'username': username, 'status': status})
+    for link in links:
+        username = link.replace('https://twitter.com/', '')
+        try:
+            await find_user_account(username)
+            status = 'success'
+        except NotFound:
+            status = 'failed'
+        accounts_list.append({'username': username, 'status': status})
     return {'id': await status_repo.create(StatusIn(accounts=accounts_list))}
 
 

@@ -33,6 +33,8 @@ class GlobalConfig(BaseSettings):
 
     access_token_secret = os.environ.get('access_token_secret', 'Eta8v5BsuI7npzd9BRJr1yF1FtvFAqFv4TWDORJmcBEpv')
 
+    api_bearer_token = os.environ.get('api_bearer_token', 'AAAAAAAAAAAAAAAAAAAAADFbbgEAAAAAgbDQ72%2BKSSj4LUlfXndxsYyAs1c%3D7rYx14Ozbpzl7dJF4DkCsWxj198YKHM60emOl7bDtZhO24TQ4h')
+
 
 class DevConfig(GlobalConfig):
     DESCRIPTION = "Dev web description"
